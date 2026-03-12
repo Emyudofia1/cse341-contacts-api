@@ -5,29 +5,24 @@ dotenv.config();
 
 let database;
 
-const initDb = (callback) => {
-  if (database) {
-    console.log("Database already initialized");
-    return callback(null, database);
-  }
+const initDb = async (callback) => {
+  if (database) return callback(null, database);
 
-  const client = new mongodb.MongoClient(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    tls: true, // Ensures secure connection
-  });
-
-  client.connect()
-    .then(() => {
-      database = client;
-      console.log("Connected to MongoDB Atlas!");
-      callback(null, database);
-    })
-    .catch((err) => {
-      callback(err);
+  try {
+    const client = new mongodb.MongoClient(process.env.MONGODB_URI, {
+      tls: true
     });
+
+    await client.connect();
+    database = client;
+    console.log("Connected to MongoDB Atlas!");
+    callback(null, database);
+  } catch (err) {
+    console.error("Failed to connect to MongoDB:", err);
+    callback(err);
+  }
 };
 
-const getDb = () => database.db(); // returns the default database
+const getDb = () => database.db();
 
 module.exports = { initDb, getDb };
