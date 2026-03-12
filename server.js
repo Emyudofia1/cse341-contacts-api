@@ -1,23 +1,23 @@
+// server.js
 const express = require("express");
-const mongodb = require("./db/connect");
-const contactsRouter = require("./routes/contacts");
-
 const app = express();
+const { initDb } = require("./db/connect");
+const contactsRoutes = require("./routes/contacts");
 
-// Render sets PORT automatically
-const port = process.env.PORT || 3000;
-
-// Middleware
+// Middleware to parse JSON
 app.use(express.json());
-app.use("/contacts", contactsRouter);
 
-// Connect to MongoDB and start server
-mongodb.initDb((err) => {
+// Initialize DB and start server
+initDb((err, db) => {
   if (err) {
-    console.error("Failed to connect to MongoDB", err);
-  } else {
-    app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+    console.error("Cannot start server without DB connection");
+    process.exit(1); // stop app if DB fails
   }
+
+  // Routes
+  app.use("/contacts", contactsRoutes);
+
+  // Dynamic port for Render, fallback to 3000 locally
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => console.log(`Server running on port ${port}`));
 });
