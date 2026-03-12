@@ -1,4 +1,3 @@
-// routes/contacts.js
 const express = require("express");
 const router = express.Router();
 const { getDb } = require("../db/connect");
@@ -9,13 +8,14 @@ router.get("/", async (req, res) => {
   try {
     const db = getDb();
     const contacts = await db.collection("contacts").find().toArray();
-    res.json(contacts);
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(contacts);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch contacts" });
+    res.status(500).json(err);
   }
 });
 
-// GET single contact by ID
+// GET one contact
 router.get("/:id", async (req, res) => {
   try {
     const db = getDb();
@@ -23,10 +23,10 @@ router.get("/:id", async (req, res) => {
       .collection("contacts")
       .findOne({ _id: new ObjectId(req.params.id) });
 
-    if (!contact) return res.status(404).json({ error: "Contact not found" });
-    res.json(contact);
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(contact);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch contact" });
+    res.status(500).json(err);
   }
 });
 

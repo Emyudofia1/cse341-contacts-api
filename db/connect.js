@@ -1,8 +1,7 @@
-// db/connect.js
 const { MongoClient } = require("mongodb");
 const dotenv = require("dotenv");
 
-dotenv.config(); // Load .env locally
+dotenv.config();
 
 let client;
 let db;
@@ -12,11 +11,13 @@ const initDb = async (callback) => {
 
   try {
     client = new MongoClient(process.env.MONGODB_URI, {
-      tls: true, // required for Atlas
+      tls: true,
     });
 
     await client.connect();
-    db = client.db(); // default DB from URI
+
+    db = client.db("contacts"); // explicitly select database
+
     console.log("Connected to MongoDB Atlas!");
     callback(null, db);
   } catch (err) {
@@ -28,5 +29,3 @@ const initDb = async (callback) => {
 const getDb = () => db;
 
 module.exports = { initDb, getDb };
-
-
