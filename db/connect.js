@@ -11,9 +11,16 @@ const initDb = (callback) => {
     return callback(null, database);
   }
 
-  mongodb.MongoClient.connect(process.env.MONGODB_URI)
-    .then((client) => {
+  const client = new mongodb.MongoClient(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    tls: true, // Ensures secure connection
+  });
+
+  client.connect()
+    .then(() => {
       database = client;
+      console.log("Connected to MongoDB Atlas!");
       callback(null, database);
     })
     .catch((err) => {
@@ -21,8 +28,6 @@ const initDb = (callback) => {
     });
 };
 
-const getDb = () => {
-  return database.db();
-};
+const getDb = () => database.db(); // returns the default database
 
 module.exports = { initDb, getDb };

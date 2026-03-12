@@ -1,7 +1,24 @@
-### Get All Contacts
+
+### 🌐 Get All Contacts (Local)
 GET http://localhost:3000/contacts
+Accept: application/json
 
 ###
 
-### Get Single Contact
+### 🌐 Get Single Contact (Local)
+# Replace the ID below with an actual contact ID from your database
 GET http://localhost:3000/contacts/69b25152e2f41366310f5be8
+Accept: application/json
+
+###
+
+### 🌐 Get All Contacts (Render)
+GET https://cse341-contacts-api-xfx2.onrender.com/contacts
+Accept: application/json
+
+###
+
+### 🌐 Get Single Contact (Render)
+# Replace the ID below with an actual contact ID from your database
+GET https://cse341-contacts-api-xfx2.onrender.com/contacts/69b25152e2f41366310f5be8
+Accept: application/json
