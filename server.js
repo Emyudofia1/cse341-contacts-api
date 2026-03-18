@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const { initDb } = require("./db/connect");
 const contactsRoutes = require("./routes/contacts");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -16,6 +18,8 @@ initDb((err, db) => {
 
   // Routes
   app.use("/contacts", contactsRoutes);
+
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Dynamic port for Render, fallback to 3000 locally
   const port = process.env.PORT || 3000;
