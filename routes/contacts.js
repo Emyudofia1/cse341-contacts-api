@@ -31,22 +31,81 @@ const contactsController = require("../controllers/contacts");
  * @swagger
  * /contacts:
  *   post:
- *     summary: Create contact
+ *     summary: Create a new contact
+ *     tags: [Contacts]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               favoriteColor:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Contact created
  */
 
 /**
  * @swagger
  * /contacts/{id}:
  *   put:
- *     summary: Update contact
+ *     summary: Update a contact
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               favoriteColor:
+ *                 type: string
+ *               birthday:
+ *                 type: string
+ *     responses:
+ *       204:
+ *         description: Contact updated
  */
 
 /**
  * @swagger
  * /contacts/{id}:
  *   delete:
- *     summary: Delete contact
+ *     summary: Delete a contact
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contact deleted
  */
+
 
 router.get("/", contactsController.getAll);
 router.get("/:id", contactsController.getSingle);
